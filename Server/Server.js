@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const fetch = require('node-fetch');
 const mongoose = require('mongoose');
+const apiController = require('./Controller/apiController');
+const userController = require('./Controller/userController');
 
 const app = express();
 
@@ -32,11 +34,13 @@ app.get('/', (req, res) => {
 });
 
 // Gets the Trivia questions from the Trivia Api and sends the questions back to the React App
-app.get('/api', (req, res) => {
-    fetch('https://opentdb.com/api.php?amount=10&category=12')
-     .then(data => data.json())
-     .then(triviaQuest => res.status(200).json(triviaQuest))
-     .then(end => res.end());
+app.get('/api', apiController.getTriviaQuestions, (req, res) => {
+  //send our client the fetched trivia questions
+    res.status(200).json(res.locals.triviaQuest);
 })
 
-app.listen(3000);
+// app.post('/SignUp', userController.createUser, (req, res) => {
+   
+// })
+
+app.listen(3000, () => console.log('Server Started'));

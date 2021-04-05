@@ -20,7 +20,7 @@ function SignUp() {
       password: password
     }
     
-    fetch('/signup', {
+    fetch('/SignUp', {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
