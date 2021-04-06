@@ -1,18 +1,26 @@
 import React, {useState} from 'react';
 import '../src/login.scss';
 import {Link} from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
 
-
+// Sign up function 
 function SignUp() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [comparePassword, setComparePassword] = useState('');
-
+  const [loggedIn, setLoggedIn] = useState(false);
+  
+  
   function attemptLogin(e){
     e.preventDefault();
-
+    // Attempt login function checks if the attempted sign up checks if password and if compared password mathc, if not throw an error
     if (password !== comparePassword){
-      alert('Passwords Must Match!');
+      return alert('Passwords Must Match!');
     }
 
     const loginInfo = {
@@ -20,7 +28,8 @@ function SignUp() {
       password: password
     }
     
-    fetch('/signup', {
+    // When the Passwords Match Make a request to the server to create an account
+    fetch('/SignUp', {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -33,13 +42,19 @@ function SignUp() {
       referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
       body: JSON.stringify(loginInfo) // body data type must match "Content-Type" header
     })
-    .then(data => console.log('Sucessfully Sent to Server'))
+    // When Sucessful update the state to true
+    .then(data => {
+      setLoggedIn(true)
+      console.log('Successfully Sent to Server')
+    })
+    // Error Consoled 
     .catch(err => console.log(err));
   }
 
 
   return (
-  <div>
+    //TERNARY TO CHECK IF loggedIn is true or false, if true redirect to "/Lobby", if flase do nothing
+    loggedIn ? <Redirect to="/Lobby" /> : <div>
     <h1 className="form__title">Create Account</h1>
     <div className="form__message form__message--error" />
     <div className="form__input-group">

@@ -38,7 +38,7 @@
 
   "license": "ISC",
 
-  "bugs": {
+  "bugs": { 
 
     "url": "https://github.com/WizardSource/triviaGame/issues"
 
@@ -49,6 +49,8 @@
   "dependencies": {
 
     "@babel/preset-react": "^7.13.13",
+
+    "bcryptjs": "^2.4.3",
 
     "express": "^4.17.1",
 
@@ -77,6 +79,8 @@
     "@babel/preset-env": "^7.13.12",
 
     "babel-loader": "^8.2.2",
+
+    "cookie-parser": "^1.4.5",
 
     "css-loader": "^5.2.0",
 
