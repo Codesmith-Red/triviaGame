@@ -20,16 +20,17 @@ class Login extends React.Component {
     this.attemptLogin = this.attemptLogin.bind(this);
   }
 
+  // Updates the State with the username typed in
   handleUserNameText(e){
-    console.log(e.target.value);
     this.setState({ username: e.target.value })
   }
 
+  // Updates the State with the password typed in
   handlePasswordText(e){
-    console.log(e.target.value);
     this.setState({ password: e.target.value })
   }
 
+  // Function that will take the current username and password and sends the info to the backend server to be verified
   attemptLogin(e){
     e.preventDefault();
 
@@ -37,6 +38,7 @@ class Login extends React.Component {
       username: this.state.username,
       password: this.state.password
     }
+    
     
     fetch('/Login', {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -53,7 +55,6 @@ class Login extends React.Component {
     })
     .then(data => console.log('Successfully Sent to Server'))
     .catch(err => console.log(err));
-
   }
 
   render() {

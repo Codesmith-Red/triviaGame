@@ -1,70 +1,59 @@
 const User = require('../Models/userModel');
 const bcrypt = require('bcryptjs');
+
+
 const userController = {};
 
-/**
-* getAllUsers - retrieve all users from the database and stores it into res.locals
-* before moving on to next middleware.
-*/
-userController.getAllUsers = (req, res, next) => {
-  User.find({}, (err, users) => {
-    // if a database error occurs, call next with the error message passed in
-    // for the express global error handler to catch
-    if (err) return next('Error in userController.getAllUsers: ' + JSON.stringify(err));
-    
-    // store retrieved users into res.locals and move on to next middleware
-
-    res.locals.users = users;
-    return next();
-  });
-};
-
-/**
-* createUser - create and save a new User into the database.
-*/
+// Create a User in the data base with 'username' and 'password' on the body
 userController.createUser = (req, res, next) => {
-  // write code here
-  //create a user from the client's request.
-  const {username, password} = req.body;
-
-
-  User.create({username, password}, (err, response) => {
-
-    if(err) {
-      res.render('./../client/signup.ejs', { error: err });
-    }
+  
     
-    // console.log('locals'res.locals)
-    // res.locals = response.id; 
-    next();
- });
-}
-
-
-/**
-* verifyUser - Obtain username and password from the request body, locate
-* the appropriate user in the database, and then authenticate the submitted password
-* against the password stored in the database.
-*/
-userController.verifyUser = (req, res, next) => {
-  // check if a user exists and the password is correct
-  const {username, password} = req.body;
-
-  User.find({username, password}, (err, user) => {
-    // if a database error occurs, call next with the error message passed in
-    // for the express global error handler to catch
-    if(err) {
-      res.render('./../Client/SignUp.js', { error: err });
-    }
+    const {username, password} = req.body;
+    const userInfo = {username, password};
     
-    if(user.length < 1) {
-      res.render('./../Client/SignUp.js', { error: 'invalid login details' });
-    }
-    // console.log("user model zero index: ", user[0]._doc._id.id)
-    res.locals.userId = user[0]._doc._id.id.toString();
-    // console.log(User.id)
-    return next();
-  });
-};
+    // Atempt to Create User
+    User.create(userInfo)
+    .then((user) => { 
+      // Store the newly created User Id on the res.locals object
+      res.locals.id = user._id;
+      next();
+    })
+    // When the Error Occurs it will send the error
+    .catch((e) => {
+      next('Happening in CREATE USER');
+    })
+  
+  };
+  
+  
+ //Find user in database. Check entered password against stored password.
+ //THIS IS NOT FUNCTIONAL YET!!!
+  userController.verifyUser = (req, res, next) => {
+    // Get the username and password from request body
+    const {username, password} = req.body;
+  
+    // Find the User
+    User.find({ username: username }, (error, array) => {
+      const user = array[0];
+      
+      // Handle Error
+      if (error){
+        next('Error in VERIFY USER');
+      }
+  
+      // Compare passwords
+      if (user.password === password){
+        //When Sucessful, add passwords to res.locals
+        res.locals.id = user._id;
+        next();
+      }else{
+        // This logic needs to be completed
+        console.log('redirecting to signup');
+        res.redirect('/');
+      }
+  
+    });
+    
+  };
 
 module.exports = userController;

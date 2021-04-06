@@ -29,3 +29,12 @@ Password: codesmithLA42
     1. npm install
     2. npm run build
     3. npm run dev
+
+# not completed
+
+    -usercontroller verify user not working yet
+    -when user logs in check hash and password
+
+# trello update
+
+https://trello.com/invite/b/XcmWfXe7/01b1bc4cc68729e942b3467a31891340/scrum-cs
