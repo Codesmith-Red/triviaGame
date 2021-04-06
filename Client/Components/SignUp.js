@@ -16,10 +16,9 @@ function SignUp() {
   const [loggedIn, setLoggedIn] = useState(false);
   
   
-  // Attempt login function checks if the attempted login 
   function attemptLogin(e){
     e.preventDefault();
-
+    // Attempt login function checks if the attempted sign up checks if password and if compared password mathc, if not throw an error
     if (password !== comparePassword){
       return alert('Passwords Must Match!');
     }
